@@ -1,9 +1,47 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>My Flask App</title>
-</head>
-<body>
-  <h1>Hello Flask!</h1>
-</body>
-</html>
+{% extends 'base.html'%}
+
+{% block head %}
+<style>
+    table,th,td{
+        border: 1px solid rgb(0, 0, 0);
+        border-collapse: collapse;
+        padding: 8px;
+    }
+</style>
+{%endblock%}
+
+{%block body%}
+<div class="content" style="text-align: center;">
+    <h1>Task Master</h1>
+    {% if tasks|length <1 %}
+    <h4>There are no tasks, create one below</h4>
+    {% else %}
+
+    <table style="margin: 0 auto; border-collapse: collapse;">
+        <tr> <!--new row-->
+            <th>Task</th>
+            <th>Added</th>
+            <th>Actions</th>
+        </tr>
+        {%for task in tasks%}
+            <tr> <!--another new row-->
+                <td>{{ task.content }}</td>
+                <td>{{ task.date_created.date() }}</td>
+                <td>
+                    <a href="/delete/{{task.id}}">Delete</a>
+                    <br><!--another row-->
+                    <a href="/update/{{task.id}}">Update</a>
+                </td>
+            </tr>
+        {%endfor%}
+    </table>
+    {%endif%}
+
+    <br><br>
+    
+    <form action="/" method="POST">
+        <input type="text" name="content" id="content" placeholder="Enter a task">
+        <input type="submit" value="Add Task"><!--value means butten name-->
+    </form>
+</div>
+{%endblock%}
